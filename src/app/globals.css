@@ -1,0 +1,233 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   COSMOS ACADEMY — Gaya global "cosmic dark"
+   Background utama: #0a0e1a · aksen gradien ungu → biru → cyan
+   ============================================================ */
+
+:root {
+  --cosmos-void: #0a0e1a;
+  --cosmos-deep: #070a14;
+  --cosmos-panel: #111a2e;
+  --cosmos-line: rgba(148, 163, 184, 0.16);
+  --aurora: linear-gradient(120deg, #8b5cf6 0%, #6366f1 35%, #22d3ee 100%);
+}
+
+* {
+  border-color: var(--cosmos-line);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-color: var(--cosmos-void);
+  color: #e2e8f0;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgba(139, 92, 246, 0.4);
+  color: #fff;
+}
+
+/* ---------------------------- SCROLLBAR ---------------------------- */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #070a14;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #6d28d9, #0e7490);
+  border-radius: 999px;
+  border: 2px solid #070a14;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #7c3aed, #0891b2);
+}
+
+/* ---------------------------- GLASSMORPHISM ---------------------------- */
+@layer components {
+  .glass {
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.035);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+  }
+
+  .glass-strong {
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: linear-gradient(160deg, rgba(30, 41, 59, 0.72) 0%, rgba(11, 17, 32, 0.9) 100%);
+    -webkit-backdrop-filter: blur(24px);
+    backdrop-filter: blur(24px);
+    box-shadow: 0 22px 60px -30px rgba(2, 6, 23, 0.95), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  .aurora-text {
+    background: var(--aurora);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .holo-line {
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(34, 211, 238, 0.7),
+      rgba(139, 92, 246, 0.7),
+      transparent
+    );
+  }
+
+  /* Paragraf artikel ensiklopedia */
+  .article-prose p {
+    @apply text-sm leading-7 text-slate-300 sm:text-[15px] sm:leading-8;
+  }
+  .article-prose p + p {
+    @apply mt-4;
+  }
+}
+
+/* ---------------------------- HOLOGRAM / GLITCH ---------------------------- */
+/* Didefinisikan eksplisit di CSS (bukan hanya di tailwind.config) agar animasi
+   tetap ada meskipun kelas utilitas `animate-scanline` tidak dipakai di markup. */
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes glitch {
+  0%,
+  100% {
+    clip-path: inset(0 0 0 0);
+    transform: translateX(0);
+  }
+  20% {
+    clip-path: inset(12% 0 62% 0);
+    transform: translateX(-3px);
+  }
+  40% {
+    clip-path: inset(48% 0 24% 0);
+    transform: translateX(3px);
+  }
+  60% {
+    clip-path: inset(76% 0 8% 0);
+    transform: translateX(-2px);
+  }
+  80% {
+    clip-path: inset(30% 0 44% 0);
+    transform: translateX(2px);
+  }
+}
+
+.hologram-scan {
+  position: relative;
+  overflow: hidden;
+}
+.hologram-scan::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(34, 211, 238, 0.16) 45%,
+    rgba(34, 211, 238, 0.28) 50%,
+    transparent 100%
+  );
+  animation: scanline 3.4s linear infinite;
+  pointer-events: none;
+}
+
+.glitch-text {
+  position: relative;
+  display: inline-block;
+}
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.glitch-text::before {
+  color: #22d3ee;
+  transform: translate(-2px, -1px);
+  opacity: 0.75;
+  mix-blend-mode: screen;
+}
+.glitch-text::after {
+  color: #f472b6;
+  transform: translate(2px, 1px);
+  opacity: 0.75;
+  mix-blend-mode: screen;
+}
+
+/* ---------------------------- EASTER EGG: HYPERSPACE ---------------------------- */
+html.hyperspace-mode body {
+  filter: saturate(1.5) hue-rotate(28deg) contrast(1.08);
+  transition: filter 400ms ease;
+}
+html.hyperspace-mode main,
+html.hyperspace-mode header,
+html.hyperspace-mode footer {
+  animation: hyperspace-wobble 1.6s ease-in-out infinite;
+}
+
+@keyframes hyperspace-wobble {
+  0%,
+  100% {
+    transform: perspective(1200px) rotateX(0deg) scale(1);
+    filter: blur(0px);
+  }
+  50% {
+    transform: perspective(1200px) rotateX(1.2deg) scale(1.012);
+    filter: blur(0.6px);
+  }
+}
+
+/* ---------------------------- KURSOR KUSTOM ---------------------------- */
+html.custom-cursor-active,
+html.custom-cursor-active a,
+html.custom-cursor-active button {
+  cursor: none;
+}
+@media (hover: none), (pointer: coarse) {
+  html.custom-cursor-active,
+  html.custom-cursor-active a,
+  html.custom-cursor-active button {
+    cursor: auto;
+  }
+}
+
+/* ---------------------------- AKSESIBILITAS ---------------------------- */
+:focus-visible {
+  outline: 2px solid rgba(34, 211, 238, 0.8);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
